@@ -7,6 +7,8 @@ interface UserAttributes{
     phone:number;
     name: string;
     password: string;
+    resetToken: string | null;
+    resetTokenExpiration: Date | null;
 }
 
 interface UserActivationAttribute extends Optional<UserAttributes, "id">{}
@@ -17,6 +19,8 @@ class User extends Model<UserAttributes, UserActivationAttribute> implements Use
     public phone!:number;
     public name!: string;
     public password!: string;
+    public resetToken!: string |null ;
+    public resetTokenExpiration!: Date | null ;
 }
 
 User.init({
@@ -28,13 +32,13 @@ User.init({
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         unique:true,
      
     },
     phone:{
         type: DataTypes.INTEGER,
-        allowNull:true,
+        allowNull:false,
     },
     name: {
         type: DataTypes.STRING,
@@ -43,7 +47,17 @@ User.init({
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    resetToken:{
+        type:DataTypes.STRING || null,
+        allowNull: true,
+        defaultValue:null
+    },
+    resetTokenExpiration:{
+        type:DataTypes.DATE || null,
+        allowNull: true,
+        defaultValue:null
+    },
 },
 {
     sequelize,

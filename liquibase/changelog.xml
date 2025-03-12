@@ -26,6 +26,14 @@
              <column name="password" type="varchar(255)">
                 <constraints unique="true" nullable="false"/>
             </column>
+
+        <column name="resetToken" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+
+        <column name="resetTokenExpiration" type="datetime">
+            <constraints nullable="true"/>
+        </column>
             <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" >
                 <constraints nullable="false"/>
             </column>
@@ -34,6 +42,8 @@
             </column>
         </createTable>
     </changeSet>
+
+   
 
 
 

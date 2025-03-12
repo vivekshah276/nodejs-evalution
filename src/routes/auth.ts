@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PostLogin,PostSignup } from "../controller/auth";
+import { forgotPassword, NewPassword, PostLogin,PostSignup } from "../controller/auth";
 import { body, validationResult } from "express-validator";
 // import { Request, Response, NextFunction } from "express";
 import User from "../models/user.js";
@@ -45,5 +45,12 @@ router.post("/login",[
     body('password').isLength({min:5}).withMessage("Password must be 5 characters")
 
 ],PostLogin)
+
+router.post("/forgotpassword",
+  [
+    body('email').optional().isEmail().withMessage("Invalid email Format").trim(),
+  ],forgotPassword)
+
+router.put("/newpassword",NewPassword);
 
 export default router;

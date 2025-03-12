@@ -18,6 +18,11 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({ message: err.message });
 });
 
+app.use((err:any, req:Request, res:Response, next:NextFunction)=>{
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({message: "Error in internal server"})
+})
+
 const startServer = async()=>{
     try{
         await sequelize.sync()
