@@ -20,6 +20,7 @@ interface CustomError extends Error {
   statusCode: number;
 }
 
+//signup user
 export const PostSignup = async (
   req: Request,
   res: Response,
@@ -38,7 +39,7 @@ export const PostSignup = async (
       name,
       password: hashedPassword,
     });
-    res.json({ success: true, user: user });
+    res.status(201).json({ success: true, user: user });
     return;
   } catch (err: unknown) {
     const error = err as CustomError;
@@ -50,6 +51,8 @@ export const PostSignup = async (
   }
 };
 
+
+//login
 export const PostLogin = async (
   req: Request,
   res: Response,
@@ -96,6 +99,7 @@ export const PostLogin = async (
   }
 };
 
+//forgot password
 export const forgotPassword = async (
   req: Request,
   res: Response,
@@ -138,6 +142,7 @@ export const forgotPassword = async (
   }
 };
 
+//set new password
 export const NewPassword = async (
   req: Request,
   res: Response,

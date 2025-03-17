@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { forgotPassword, NewPassword, PostLogin,PostSignup } from "../controller/auth";
 import { body, validationResult } from "express-validator";
-// import { Request, Response, NextFunction } from "express";
-import User from "../models/user.js";
 
 const router = Router();
 
