@@ -5,7 +5,7 @@ interface CustomError extends Error{
     statusCode : number;
 }
 
-//get all the categories
+//get all the category list - Home
 export const getCategory = async (req:Request, res: Response,next:NextFunction)=>{
     const allCategory = await Category_Product.findAll();
     if(!allCategory){

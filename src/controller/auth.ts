@@ -8,11 +8,11 @@ import nodemailer from "nodemailer";
 import { Op } from "sequelize";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
+  host: config.email_host,
+  port: config.email_port,
   auth: {
-    user: "earl.hirthe@ethereal.email",
-    pass: "kSVP3TR4Hmk2CY2FfR",
+    user: config.email_auth_user,
+    pass: config.email_auth_pass,
   },
 });
 
@@ -52,7 +52,7 @@ export const PostSignup = async (
 };
 
 
-//login
+//login with email or phone
 export const PostLogin = async (
   req: Request,
   res: Response,
@@ -71,7 +71,6 @@ export const PostLogin = async (
       error.statusCode = 404;
       throw error;
     }
-    //console.log("ksjgjk")
     const isMatchPassword = await bcrypt.compare(password, user.password);
     if (!isMatchPassword) {
       res.status(400).json({ message: "Password not matched" });
@@ -99,7 +98,7 @@ export const PostLogin = async (
   }
 };
 
-//forgot password
+//forgot password via email
 export const forgotPassword = async (
   req: Request,
   res: Response,
@@ -160,7 +159,6 @@ export const NewPassword = async (
         },
       },
     });
-    console.log("user", user);
     if (!user) {
       const error = new Error("User not found!!") as CustomError;
       error.statusCode = 404;
@@ -180,3 +178,37 @@ export const NewPassword = async (
     next(error);
   }
 };
+
+//update the user profile
+export const updateProfile = async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
+  const userId = req.user.id;
+  console.log("kskjbc",userId)
+  const {name, email, phone, password} = req.body;
+  try{
+    
+    const user = await User.findByPk(userId)
+    if(!user){
+      const error = new Error("no user found")as CustomError
+      error.statusCode = 404;
+      throw error;
+    }
+    user.name = name || user?.name;
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+    if(password){
+      const hashedPassword = await bcrypt.hash(password,12)
+      user.password = hashedPassword;
+    }
+    user?.save();
+    res.status(200).json({success:true, user:user})
+    return;
+  }
+  catch(err:unknown){
+    const error = err as CustomError;
+    console.log("erl;rmc",error)
+    if(!error.statusCode){
+      error.statusCode = 500;
+    }
+    next(error)
+  }
+}

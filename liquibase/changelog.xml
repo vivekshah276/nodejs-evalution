@@ -10,34 +10,28 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-          
             <column name="email" type="varchar(255)">
                 <constraints unique="true" nullable="false"/>
             </column>
-
-              <column name="phone" type="varchar(255)">
+            <column name="phone" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-
-             <column name="password" type="varchar(255)">
-                <constraints  nullable="false"/>
-            </column>
-
-        <column name="resetToken" type="varchar(255)">
-            <constraints nullable="true"/>
-        </column>
-
-        <column name="resetTokenExpiration" type="datetime">
-            <constraints nullable="true"/>
-        </column>
-            <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" >
+            <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="updatedAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" >
+            <column name="resetToken" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="resetTokenExpiration" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updatedAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -48,71 +42,58 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-          
             <column name="name" type="varchar(255)">
-                <constraints  nullable="false"/>
-            </column>
-
-              <column name="price" type="int">
                 <constraints nullable="false"/>
             </column>
-
-            <column name="rating" type="float">
-                <constraints  nullable="true"/>
+            <column name="price" type="int">
+                <constraints nullable="false"/>
             </column>
-
-             <column name="discount" type="float">
+            <column name="rating" type="float">
                 <constraints nullable="true"/>
             </column>
-
+            <column name="discount" type="float">
+                <constraints nullable="true"/>
+            </column>
             <column name="category" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-
             <column name="userId" type="int">
                 <constraints nullable="false"/>
             </column>
-
-               <column name="categoryId" type="int">
+            <column name="categoryId" type="int">
                 <constraints nullable="false"/>
             </column>
-
-
-            <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" >
+            <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="updatedAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" >
+            <column name="updatedAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="3" author="vivek">
-    <createTable tableName="category_products">
-        <column name="id" type="int" autoIncrement="true">
-            <constraints primaryKey="true" nullable="false"/>
-        </column>
+        <createTable tableName="category_products">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updatedAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
-        <column name="name" type="varchar(255)">
-            <constraints unique="true" nullable="false"/>
-        </column>
-
-        <column name="description" type="text">
-            <constraints nullable="true"/>
-        </column>
-
-        <column name="createdAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
-            <constraints nullable="false"/>
-        </column>
-
-        <column name="updatedAt" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
-            <constraints nullable="false"/>
-        </column>
-    </createTable>
-</changeSet>
-
-
-
-
+    <changeSet id="4" author="vivek">
+        <dropColumn tableName="products" columnName="category"/>
+    </changeSet>
 
 </databaseChangeLog>

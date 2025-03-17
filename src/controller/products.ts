@@ -7,7 +7,7 @@ interface CustomError extends Error {
   statusCode?: number;
 }
 
-//Fetch all the products
+//Fetch all the products - Product Listing
 export const getProducts = async (
   req: Request,
   res: Response,
@@ -25,7 +25,7 @@ export const getProducts = async (
   }
 };
 
-//fetch single product detail
+//fetch single product detail - Product Listing & Product Details
 export const getProduct = async (
   req: Request,
   res: Response,
@@ -47,7 +47,7 @@ export const getProduct = async (
   }
 };
 
-//create a product
+//create a product 
 export const addProduct = async (
   req: Request,
   res: Response,
@@ -70,7 +70,6 @@ export const addProduct = async (
       price,
       rating,
       discount,
-      category,
       userId,
       categoryId,
     });
@@ -85,6 +84,8 @@ export const addProduct = async (
   }
 };
 
+
+//filter and sorting the products - Product Listing
 export const filterProducts = async (
   req: Request,
   res: Response,
@@ -142,3 +143,27 @@ export const filterProducts = async (
     next(error);
   }
 };
+
+
+//Search the product - Home
+export const searchProduct = async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
+  const {name} = req.body;
+  try{
+    const product = await Product.findOne({where:{name}});
+    const category = await Category_Product.findOne({where:{name}})
+
+    if(!product && !category){
+      res.status(404).json({success:false, message:"No products Found"})
+      return;
+    }
+    res.status(200).json({success:true, product, category})
+    return;
+  }
+  catch(err:unknown){
+    const error = err as CustomError;
+    if(!error.statusCode){
+      error.statusCode = 500;
+    }
+    next(error)
+  }
+}

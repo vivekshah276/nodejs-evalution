@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addProduct, filterProducts, getProduct, getProducts } from "../controller/products";
+import { addProduct, filterProducts, getProduct, getProducts, searchProduct } from "../controller/products";
 import { addCategory, getCategory } from "../controller/category_product";
 import isAuth from "../middleware/is-auth";
 
@@ -12,6 +12,7 @@ router.get("/product/:productId",getProduct);
 router.get("/category",getCategory)
 router.post("/addcategory",isAuth,addCategory);
 
-router.get("/products/filter",filterProducts)
+router.get("/products/filter",filterProducts);
+router.get("/search",searchProduct)
 
 export default router;

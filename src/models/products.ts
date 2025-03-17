@@ -7,7 +7,7 @@ interface ProductAttributes {
   price: Float32Array;
   rating: Float32Array | null;
   discount: Float32Array | null;
-  category: string;
+  
   userId: number;
   categoryId: number;
 }
@@ -24,7 +24,7 @@ class Product
   public price!: Float32Array;
   public rating!: Float32Array | null;
   public discount!: Float32Array | null;
-  public category!: string;
+
   public userId!: number;
   public categoryId!: number;
 }
@@ -53,10 +53,7 @@ Product.init(
       type: DataTypes.FLOAT,
       allowNull: true,
     },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+ 
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
