@@ -7,7 +7,7 @@ interface ProductAttributes {
   price: Float32Array;
   rating: Float32Array | null;
   discount: Float32Array | null;
-  
+
   userId: number;
   categoryId: number;
 }
@@ -53,7 +53,7 @@ Product.init(
       type: DataTypes.FLOAT,
       allowNull: true,
     },
- 
+
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -63,15 +63,15 @@ Product.init(
       },
       onDelete: "CASCADE",
     },
-    categoryId:{
-      type:DataTypes.INTEGER,
-      allowNull:false,
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: "category_products",
-        key:"id"
+        key: "id",
       },
-      onDelete:"CASCADE"
-    }
+      onDelete: "CASCADE",
+    },
   },
   { sequelize, tableName: "products", timestamps: true }
 );

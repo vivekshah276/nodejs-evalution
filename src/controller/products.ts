@@ -33,10 +33,7 @@ export const getProduct = async (
 ) => {
   const prodId = req.params.productId;
   try {
-    console.log(prodId);
     const product = await Product.findByPk(prodId);
-    console.log(product);
-
     res.status(200).json({ success: true, product: product });
   } catch (err: unknown) {
     const error = err as CustomError;
@@ -47,7 +44,7 @@ export const getProduct = async (
   }
 };
 
-//create a product 
+//create a product
 export const addProduct = async (
   req: Request,
   res: Response,
@@ -84,7 +81,6 @@ export const addProduct = async (
   }
 };
 
-
 //filter and sorting the products - Product Listing
 export const filterProducts = async (
   req: Request,
@@ -101,40 +97,40 @@ export const filterProducts = async (
       whereClause.price = {
         [Op.gte]: parseFloat(minPrice as string),
         [Op.lte]: parseFloat(maxPrice as string),
-      }};
+      };
+    }
 
-      if (minRating) {
-        whereClause.rating = {
-          [Op.lte]: parseFloat(minRating as string),
-        };
-      }
+    if (minRating) {
+      whereClause.rating = {
+        [Op.lte]: parseFloat(minRating as string),
+      };
+    }
 
-      if (minDiscount) {
-        whereClause.discount = {
-          [Op.lte]: parseFloat(minDiscount as string),
-        };
-      }
+    if (minDiscount) {
+      whereClause.discount = {
+        [Op.lte]: parseFloat(minDiscount as string),
+      };
+    }
 
-      if (category) {
-        whereClause.category = category;
-      }
+    if (category) {
+      whereClause.category = category;
+    }
 
-      if (sortBy === "price_asc") {
-        orderClause.push(["price", "ASC"]);
-      } else if (sortBy === "price_desc") {
-        orderClause.push(["price", "DESC"]);
-      } else if (sortBy === "name_asc") {
-        orderClause.push(["name", "ASC"]);
-      } else if (sortBy === "name_desc") {
-        orderClause.push(["name", "DESC"]);
-      }
+    if (sortBy === "price_asc") {
+      orderClause.push(["price", "ASC"]);
+    } else if (sortBy === "price_desc") {
+      orderClause.push(["price", "DESC"]);
+    } else if (sortBy === "name_asc") {
+      orderClause.push(["name", "ASC"]);
+    } else if (sortBy === "name_desc") {
+      orderClause.push(["name", "DESC"]);
+    }
 
-      const product = await Product.findAll({
-        where: whereClause,
-        order: orderClause,
-      });
-      res.status(200).json({ success: true, product: product });
-    
+    const product = await Product.findAll({
+      where: whereClause,
+      order: orderClause,
+    });
+    res.status(200).json({ success: true, product: product });
   } catch (err: unknown) {
     const error = err as CustomError;
     if (!error.statusCode) {
@@ -144,26 +140,28 @@ export const filterProducts = async (
   }
 };
 
-
 //Search the product - Home
-export const searchProduct = async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
-  const {name} = req.body;
-  try{
-    const product = await Product.findOne({where:{name}});
-    const category = await Category_Product.findOne({where:{name}})
+export const searchProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { name } = req.body;
+  try {
+    const product = await Product.findOne({ where: { name } });
+    const category = await Category_Product.findOne({ where: { name } });
 
-    if(!product && !category){
-      res.status(404).json({success:false, message:"No products Found"})
+    if (!product && !category) {
+      res.status(404).json({ success: false, message: "No products Found" });
       return;
     }
-    res.status(200).json({success:true, product, category})
+    res.status(200).json({ success: true, product, category });
     return;
-  }
-  catch(err:unknown){
+  } catch (err: unknown) {
     const error = err as CustomError;
-    if(!error.statusCode){
+    if (!error.statusCode) {
       error.statusCode = 500;
     }
-    next(error)
+    next(error);
   }
-}
+};
