@@ -51,7 +51,6 @@ export const PostSignup = async (
   }
 };
 
-
 //login with email or phone
 export const PostLogin = async (
   req: Request,
@@ -91,7 +90,6 @@ export const PostLogin = async (
     const error = err as CustomError;
     if (!error.statusCode) {
       error.statusCode = 500;
-      console.log(error);
     }
 
     next(error);
@@ -149,7 +147,6 @@ export const NewPassword = async (
 ): Promise<void> => {
   const newPassword = req.body.password;
   const passwordToken = req.body.token;
-  console.log("token", passwordToken);
   try {
     const user = await User.findOne({
       where: {
@@ -180,35 +177,35 @@ export const NewPassword = async (
 };
 
 //update the user profile
-export const updateProfile = async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
+export const updateProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const userId = req.user.id;
-  console.log("kskjbc",userId)
-  const {name, email, phone, password} = req.body;
-  try{
-    
-    const user = await User.findByPk(userId)
-    if(!user){
-      const error = new Error("no user found")as CustomError
+  const { name, email, phone, password } = req.body;
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      const error = new Error("no user found") as CustomError;
       error.statusCode = 404;
       throw error;
     }
     user.name = name || user?.name;
     user.email = email || user.email;
     user.phone = phone || user.phone;
-    if(password){
-      const hashedPassword = await bcrypt.hash(password,12)
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 12);
       user.password = hashedPassword;
     }
     user?.save();
-    res.status(200).json({success:true, user:user})
+    res.status(200).json({ success: true, user: user });
     return;
-  }
-  catch(err:unknown){
+  } catch (err: unknown) {
     const error = err as CustomError;
-    console.log("erl;rmc",error)
-    if(!error.statusCode){
+    if (!error.statusCode) {
       error.statusCode = 500;
     }
-    next(error)
+    next(error);
   }
-}
+};
