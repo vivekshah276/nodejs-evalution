@@ -11,6 +11,7 @@ import productRoutes from "./routes/products.js";
 import Cart from "./models/cart";
 import CartItems from "./models/cartItems";
 import Reviews from "./models/reviews";
+import associations from "./models/associations";
 
 dotenv.config();
 
@@ -20,36 +21,6 @@ app.use(bodyParser.json());
 
 app.use("/seabasket", authRoutes);
 app.use("/seabasket", productRoutes);
-
-Product.belongsTo(User, {
-  constraints: true,
-  onDelete: "CASCADE",
-  foreignKey: "userId",
-});
-User.hasMany(Product, { foreignKey: "userId" });
-Product.belongsTo(Category_Product, {
-  constraints: true,
-  onDelete: "CASCADE",
-  foreignKey: "categoryId",
-});
-Category_Product.hasMany(Product, { foreignKey: "categoryId" });
-
-//Reviews association
-User.hasMany(Reviews, { foreignKey: "userId" });
-Product.hasMany(Reviews, { foreignKey: "productId" });
-Reviews.belongsTo(User, { foreignKey: "userId" });
-
-// A User has ONE Cart
-User.hasOne(Cart, { foreignKey: "userId", onDelete: "CASCADE" });
-Cart.belongsTo(User, { foreignKey: "userId" });
-
-// A Cart contains multiple CartItems (One-to-Many)
-Cart.hasMany(CartItems, { foreignKey: "cartId", onDelete: "CASCADE" });
-CartItems.belongsTo(Cart, { foreignKey: "cartId" });
-
-// A Product can be in multiple CartItems (One-to-Many)
-Product.hasMany(CartItems, { foreignKey: "productId", onDelete: "CASCADE" });
-CartItems.belongsTo(Product, { foreignKey: "productId" });
 
 //error handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
