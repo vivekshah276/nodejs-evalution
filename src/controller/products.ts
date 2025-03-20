@@ -395,6 +395,37 @@ export const postOrder = async (
   }
 };
 
+//remove item from cart
+export const removeCartItems = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user.id;
+    const productId = req.body.productId;
+    const cart = await Cart.findOne({ where: { userId: userId } });
+    const cartId = cart?.id;
+    const existProduct = await CartItems.findOne({
+      where: { cartId: cartId, productId: productId },
+    });
+    if (!existProduct) {
+      const error = new Error("There is no item in the cart") as CustomError;
+      error.statusCode = 404;
+      throw error;
+    }
+    await existProduct.destroy();
+    res.status(200).json({ success: true, message: "Item removed" });
+    return;
+  } catch (err: unknown) {
+    const error = err as CustomError;
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
+};
+
 // getOrders
 export const getOrder = async (
   req: Request,

@@ -11,6 +11,7 @@ import {
   postCart,
   postOrder,
   postReview,
+  removeCartItems,
   searchProduct,
   trendingProducts,
 } from "../controller/products";
@@ -36,6 +37,7 @@ router.post("/products/:productId/review", isAuth, postReview);
 
 router.get("/cart", isAuth, getCart);
 router.post("/cart", isAuth, postCart);
+router.delete("/cart",isAuth,removeCartItems)
 
 router.post("/order", isAuth, postOrder);
 router.get("/order", isAuth, getOrder);
